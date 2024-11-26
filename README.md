@@ -1,3 +1,5 @@
+<img src="https://github.com/mousastech/agentes_ia/blob/b03979202b895e108787e7ae0356173f8e34f498/img/headertools_aifunctions.png?raw=true" width=100%>
+
 # Databricks AI Systems - Agentes de IA 
 
 ## Objective
