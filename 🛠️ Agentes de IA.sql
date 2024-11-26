@@ -1,5 +1,5 @@
 -- Databricks notebook source
--- MAGIC %md <img src="https://github.com/mousastech/agentes_ia/blob/b03979202b895e108787e7ae0356173f8e34f498/img/headertools_aifunctions.png?raw=true" width=100%>
+-- MAGIC %md <img src="https://github.com/mousastech/agentes_ia/blob/a6db91737186d6d21d7808bb9950b154376d1d69/img/headertools_aiagents.png?raw=true" width=100%>
 -- MAGIC
 -- MAGIC # Usando Agentes de IA
 -- MAGIC
@@ -8,7 +8,7 @@
 -- COMMAND ----------
 
 -- MAGIC %md
--- MAGIC ## Objetivos del ejercicio
+-- MAGIC ## Objetivo del ejercicio
 -- MAGIC
 -- MAGIC El objetivo de este laboratorio es implementar el siguiente caso de uso:
 -- MAGIC
