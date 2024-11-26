@@ -20,6 +20,16 @@ En un nivel alto, usted crea y presenta un conjunto de funciones personalizadas 
 
 ## Disclaimer
 
+- Se requiere Unity Catalog
+- Se requiere la criación de Vector Search
+- Se requiere la utilización de LLMs
+
 ## Implementation Details
 
+<img src="https://github.com/mousastech/agentes_ia/blob/e4602f57c4a83b171c7c541e11244136cdd80816/img/llm-call.png?raw=true" width="100%">
+
 ## Setup and Usage
+
+1. Hacer el setup de las tablas (si aún no ha hecho) - notebook **Setup**
+2. Correr el notebook para la criación de los componentes
+3. Crear los índices en el Vector Search
