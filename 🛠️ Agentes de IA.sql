@@ -1,5 +1,5 @@
 -- Databricks notebook source
--- MAGIC %md <img src="https://github.com/Databricks-BR/lab_genai/blob/main/img/header.png?raw=true" width=100%>
+-- MAGIC %md <img src="https://github.com/mousastech/agentes_ia/blob/b03979202b895e108787e7ae0356173f8e34f498/img/headertools_aifunctions.png?raw=true" width=100%>
 -- MAGIC
 -- MAGIC # Usando Agentes de IA
 -- MAGIC
@@ -21,15 +21,16 @@
 -- MAGIC Los agentes están diseñados para superar este desafío. Son despliegues de IA más avanzados, compuestos por múltiples entidades (herramientas) especializadas en diferentes acciones (recuperar información o interactuar con sistemas externos).
 -- MAGIC
 -- MAGIC En términos generales, usted crea y presenta un conjunto de funciones personalizadas a la IA. Luego, el LLM puede razonar sobre qué información debe recopilarse y qué herramientas utilizar para responder a las instrucciones que recibe.
+-- MAGIC <br><br>
 -- MAGIC
--- MAGIC <img src="https://github.com/databricks-demos/dbdemos-resources/blob/main/images/product/llm-tools-functions/llm-tools-functions-flow.png?raw=true" width="100%">
+-- MAGIC <img src="https://github.com/mousastech/agentes_ia/blob/e4602f57c4a83b171c7c541e11244136cdd80816/img/llm-call.png?raw=true" width="100%">
 
 -- COMMAND ----------
 
 -- MAGIC %md
 -- MAGIC ## Preparación
 -- MAGIC
--- MAGIC Para realizar los ejercicios, necesitamos prende un Clúster.
+-- MAGIC Para realizar los ejercicios, necesitamos prender a un Clúster.
 -- MAGIC
 -- MAGIC Simplemente siga los pasos a continuación:
 -- MAGIC 1. En la esquina superior derecha, haga clic en **Conectar**
@@ -53,7 +54,7 @@
 
 -- MAGIC %md ### A. Preparación de datos
 -- MAGIC
--- MAGIC 1. Crear o utilizar el catalogo `tutorial`
+-- MAGIC 1. Crear o utilizar el catalogo `funcionesai`
 -- MAGIC 2. Crear o utilizar el schema `carga`
 -- MAGIC 3. Crear el volumen `archivos`
 -- MAGIC 4. Importar los archivos de la carpeta `data` para el Volumen creado
@@ -75,7 +76,7 @@
 -- MAGIC 1. En el **menú principal** de la izquierda, haz clic en **`Playground`**
 -- MAGIC 2. Haz clic en el **selector de modelo** y selecciona el modelo **`Meta Llama 3.1 70B Instruct`** (si aún no está seleccionado)
 -- MAGIC 3. Hacer clic **Tools** y luego en **Add Tool** 
--- MAGIC 4. En **Hosted Function**, tipear `tutorial.carga.revisar_avaliacao`
+-- MAGIC 4. En **Hosted Function**, tipear `funcionesai.carga.revisar_avaliacao`
 -- MAGIC 5. Agregue instrucciones a continuación:
 -- MAGIC     ```
 -- MAGIC     Revise la reseña a continuación:
@@ -132,15 +133,15 @@ SELECT * FROM consultar_cliente(1)
 
 -- COMMAND ----------
 
--- MAGIC %md ### D. Testar a função como ferramenta
+-- MAGIC %md ### D. Probar la función como herramienta.
 -- MAGIC
--- MAGIC 1. No **menu principal** à esquerda, clique em **`Playground`**
--- MAGIC 2. Clique no **seletor de modelos** e selecione o modelo **`Meta Llama 3.1 70B Instruct`** (caso já não esteja selecionado)
--- MAGIC 3. Clique em **Tools** e depois em **Add Tool** 
--- MAGIC 4. Em **Hosted Function**, digite `tutorial.carga.consultar_cliente` e `academy.<seu_nome>.revisar_avaliacao`
--- MAGIC 5. Adicione a instrução abaixo:<br>
--- MAGIC     `Gere uma resposta para o cliente 1 que está insatisfeito com a qualidade da tela do seu tablet. Não esqueça de customizar a mensagem com o nome do cliente.`
--- MAGIC 6. Clique no ícone **enviar**
+-- MAGIC 1. En el **menú principal** de la izquierda, haz clic en **`Playground`**
+-- MAGIC 2. Haga clic en el **selector de modelo** y seleccione el modelo **`Meta Llama 3.1 70B Instruct`** (si aún no está seleccionado)
+-- MAGIC 3. Haga clic en **Tools** y luego en **Add Tools**
+-- MAGIC 4. En **Hosted function**, escriba `funcionesai.carga.consultar_cliente` y `funcionesai.carga.revisar_avaliacao`
+-- MAGIC 5. Agregue las instrucciones a continuación:<br>
+-- MAGIC  `Generar una respuesta al cliente 1 que no está satisfecho con la calidad de la pantalla de su tablet. No olvides personalizar el mensaje con el nombre del cliente.
+-- MAGIC 6. Haga clic en el ícono **enviar**
 
 -- COMMAND ----------
 
@@ -155,19 +156,19 @@ SELECT * FROM consultar_cliente(1)
 
 -- COMMAND ----------
 
--- MAGIC %md ## Pesquisando perguntas e respostas em uma base de conhecimento
+-- MAGIC %md ## Búsqueda de preguntas y respuestas en una base de conocimientos
 -- MAGIC
--- MAGIC Agora, precisamos prepara uma função que nos permita aproveitar uma base de conhecimento para guiar as respostas do nosso agente.
+-- MAGIC Ahora, necesitamos preparar una función que nos permita aprovechar una base de conocimientos para guiar las respuestas de nuestro agente.
 -- MAGIC
--- MAGIC Para isso, utilizaremos o **Vector Search**. Este componente permite comparar as perguntas feitas pelo nosso cliente com as que estão na base de conhecimento e, então, recuperar a resposta correspondente à pergunta com maior similaridade. A única coisa que precisamos fazer é indexar o FAQ, que carregamos mais cedo, no Vector Search!
+-- MAGIC Para hacer esto, usaremos **Vector Search**. Este componente nos permite comparar las preguntas formuladas por nuestro cliente con las de la base de conocimiento y luego recuperar la respuesta correspondiente a la pregunta con mayor similitud. ¡Lo único que debemos hacer es indexar las preguntas frecuentes, que subimos anteriormente, en Vector Search!
 -- MAGIC
--- MAGIC Vamos lá!
+-- MAGIC ¡Vamos!
 
 -- COMMAND ----------
 
 -- MAGIC %md ### A. Habilitar o Change Data Feed na tabela `FAQ`
 -- MAGIC
--- MAGIC Essa configuração permite com que o Vector Search leia os dados inseridos, excluídos ou alterados no FAQ de forma incremental.
+-- MAGIC Esta configuración permite a Vector Search leer los datos ingresados, eliminados o modificados en las preguntas frecuentes de forma incremental.
 
 -- COMMAND ----------
 
@@ -175,95 +176,18 @@ ALTER TABLE faq SET TBLPROPERTIES (delta.enableChangeDataFeed = true)
 
 -- COMMAND ----------
 
--- MAGIC %md ### B. Criar um índice no Vector Search
+-- MAGIC %md ### B. Crear un índice en Búsqueda de vectores (Vector Search)
 -- MAGIC
 -- MAGIC 1. No **menu principal** à esquerda, clique em **`Catalog`**
--- MAGIC 2. Busque a sua **tabela** `tutorial.carga.faq`
+-- MAGIC 2. Busque a sua **tabela** `funcionesai.carga.faq`
 -- MAGIC 3. Clique em `Create` e depois em `Vector search index`
 -- MAGIC 4. Preencha o formulário:
 -- MAGIC     - **Nome:** faq_index
 -- MAGIC     - **Primary key:** id
 -- MAGIC     - **Endpoint**: selecione o endpoint desejado
 -- MAGIC     - **Columns to sync:** deixar em branco (sincroniza todas as colunas)
--- MAGIC     - **Embedding source:** Compute embeddings (o Vector Search gerencia a indexação / criação de embeddings)
--- MAGIC     - **Embedding source column:** pergunta
--- MAGIC     - **Embedding model:** databricks-gte-large-en
--- MAGIC     - **Sync computed embeddings:** desabilitado
--- MAGIC     - **Sync mode:** Triggered
--- MAGIC 5. Clique em `Create`
--- MAGIC 6. Aguarde a criação do índice finalizar
-
--- COMMAND ----------
-
--- MAGIC %md ### C. Criar a função
-
--- COMMAND ----------
-
-CREATE OR REPLACE FUNCTION consultar_faq(pergunta STRING)
-RETURNS TABLE(id LONG, pergunta STRING, resposta STRING, search_score DOUBLE)
-COMMENT 'Use esta função para consultar a base de conhecimento sobre prazos de entrega, pedidos de troca ou devolução, entre outras perguntas frequentes sobre o nosso marketplace'
-RETURN select * from vector_search(
-  index => 'tutorial.carga.faq_index', 
-  query => consultar_faq.pergunta,
-  num_results => 1
-)
-
--- COMMAND ----------
-
--- MAGIC %md ### D. Testar a função
-
--- COMMAND ----------
-
-SELECT * FROM consultar_faq('Qual o prazo para devolução?')
-
--- COMMAND ----------
-
-SELECT * FROM consultar_faq('Como emitir a segunda via?')
-
--- COMMAND ----------
-
--- MAGIC %md ### E. Testar a função como ferramenta
--- MAGIC
--- MAGIC 1. No **menu principal** à esquerda, clique em **`Playground`**
--- MAGIC 2. Clique no **seletor de modelos** e selecione o modelo **`Meta Llama 3.1 70B Instruct`** (caso já não esteja selecionado)
--- MAGIC 3. Clique em **Tools** e depois em **Add Tool** 
--- MAGIC 4. Em **Hosted Function**, digite `tutorial.carga.consultar_faq`
--- MAGIC 5. Adicione a instrução abaixo:
--- MAGIC     ```
--- MAGIC     Qual o prazo para devolução?
--- MAGIC     ```
--- MAGIC 6. Clique no ícone **enviar**
-
--- COMMAND ----------
-
--- MAGIC %md ## Exercício 03.04 - Fornecendo recomendações personalizadas de produtos com base em suas descrições
--- MAGIC
--- MAGIC Por fim, também gostaríamos de criar uma ferramenta para auxiliar nossos clientes a encontrarem produtos que possuam descrições similares. Essa ferramenta irá auxiliar clientes que estejam insatisfeitos com algum produto e estejam buscando uma troca.
--- MAGIC
--- MAGIC Vamos lá!
-
--- COMMAND ----------
-
--- MAGIC %md ### A. Habilitar o Change Data Feed na tabela `produtos`
-
--- COMMAND ----------
-
-ALTER TABLE produtos SET TBLPROPERTIES (delta.enableChangeDataFeed = true)
-
--- COMMAND ----------
-
--- MAGIC %md ### B. Criar um índice no Vector Search
--- MAGIC
--- MAGIC 1. No **menu principal** à esquerda, clique em **`Catalog`**
--- MAGIC 2. Busque a sua **tabela** `academy.<seu_nome>.produtos`
--- MAGIC 3. Clique em `Create` e depois em `Vector search index`
--- MAGIC 4. Preencha o formulário:
--- MAGIC     - **Nome:** produtos_index
--- MAGIC     - **Primary key:** id
--- MAGIC     - **Endpoint**: selecione o endpoint desejado
--- MAGIC     - **Columns to sync:** deixar em branco (sincroniza todas as colunas)
--- MAGIC     - **Embedding source:** Compute embeddings (o Vector Search gerencia a indexação / criação de embeddings)
--- MAGIC     - **Embedding source column:** descricao
+-- MAGIC     - **Embedding source:** Compute embeddings (Vector Search gestiona la indexación/creación de embeddings)
+-- MAGIC     - **Embedding source column:** pregunta
 -- MAGIC     - **Embedding model:** databricks-gte-large-en
 -- MAGIC     - **Sync computed embeddings:** desabilitado
 -- MAGIC     - **Sync mode:** Triggered
@@ -276,14 +200,104 @@ ALTER TABLE produtos SET TBLPROPERTIES (delta.enableChangeDataFeed = true)
 
 -- COMMAND ----------
 
-CREATE OR REPLACE FUNCTION buscar_produtos_semelhantes(descricao STRING)
-RETURNS TABLE(id LONG, produto STRING, descricao STRING, search_score DOUBLE)
-COMMENT 'Esta função recebe a descrição de um produto, que é utilizada para buscar produtos semelhantes'
+CREATE OR REPLACE FUNCTION consultar_faq(pregunta STRING)
+RETURNS TABLE(id LONG, pregunta STRING, respuesta STRING, search_score DOUBLE)
+COMMENT 'Utilice esta función para consultar la base de conocimientos sobre tiempos de entrega, solicitudes de cambio o devolución, entre otras preguntas frecuentes sobre nuestro mercado.'
+RETURN select * from vector_search(
+  index => 'funcionesai.carga.faq_index', 
+  query => consultar_faq.pregunta,
+  num_results => 1
+)
+
+-- COMMAND ----------
+
+CREATE OR REPLACE FUNCTION funcionesai.carga.consultar_faq(pregunta STRING)
+RETURNS STRING
+COMMENT 'Utilice esta función para consultar la base de conocimientos sobre tiempos de entrega, solicitudes de cambio o devolución, entre otras preguntas frecuentes sobre nuestro mercado.'
+RETURN (
+  SELECT respuesta___ 
+  FROM vector_search(
+    index => 'funcionesai.carga.faq_index', 
+    query => pregunta,
+    num_results => 1
+  )
+  LIMIT 1
+)
+
+-- COMMAND ----------
+
+-- MAGIC %md ### D. Probar la función
+
+-- COMMAND ----------
+
+SELECT consultar_faq('¿Cuál es el plazo de devolución?') AS STRING
+
+-- COMMAND ----------
+
+SELECT consultar_faq('¿Cómo emitir un duplicado?')
+
+-- COMMAND ----------
+
+-- MAGIC %md ### E. Pruebe la función como herramienta.
+-- MAGIC
+-- MAGIC 1. En el **menú principal** de la izquierda, haz clic en **`Playground`**
+-- MAGIC 2. Haga clic en el **selector de modelo** y seleccione el modelo **`Meta Llama 3.1 70B Instruct`** (si aún no está seleccionado)
+-- MAGIC 3. Haga clic en **Tools** y luego en **Add Tools**
+-- MAGIC 4. En **Hosted Function**, escriba `funcionesia.carga.consultar_faq`
+-- MAGIC 5. Agregue la siguiente declaración:
+-- MAGIC  ```
+-- MAGIC  ¿Cuál es el plazo de devolución?
+-- MAGIC  ```
+-- MAGIC 6. Haga clic en el ícono **enviar**
+
+-- COMMAND ----------
+
+-- MAGIC %md ## Proporcionar recomendaciones de productos personalizadas basadas en sus descripciones.
+-- MAGIC
+-- MAGIC Finalmente, también nos gustaría crear una herramienta para ayudar a nuestros clientes a encontrar productos que tengan descripciones similares. Esta herramienta ayudará a los clientes que no están satisfechos con un producto y buscan un cambio.
+
+-- COMMAND ----------
+
+-- MAGIC %md ### A. Habilite Change Data Feed en la tabla `productos`
+
+-- COMMAND ----------
+
+ALTER TABLE productos SET TBLPROPERTIES (delta.enableChangeDataFeed = true)
+
+-- COMMAND ----------
+
+-- MAGIC %md ### B. Crear un índice en el Vector Search
+-- MAGIC
+-- MAGIC 1. En el **menú principal** de la izquierda, haga clic en **`Catálogo`**
+-- MAGIC 2. Busca tu **tabla** `funcionesai.carga.productos`
+-- MAGIC 3. Haga clic en `Create` y luego en `Vector search index`
+-- MAGIC 4. Complete el formulario:
+-- MAGIC  - **Nombre:** id
+-- MAGIC  - **Primary key:** id
+-- MAGIC  - **Endpoint**: seleccione el punto final deseado
+-- MAGIC  - **Columns to sync:** dejar en blanco (sincroniza todas las columnas)
+-- MAGIC  - **Fuente de incrustación:** Computar incrustaciones (Vector Search gestiona la indexación/creación de incrustaciones)
+-- MAGIC  - **Embedding source:** descripción
+-- MAGIC  - **Embedding model:** databricks-gte-large-en
+-- MAGIC  - **Sync computed embeddings:** deshabilitado
+-- MAGIC  - **Sync mode:** Activado
+-- MAGIC 5. Haga clic en "Create".
+-- MAGIC 6. Espere a que finalice la creación del índice.
+
+-- COMMAND ----------
+
+-- MAGIC %md ### C. Crear la función
+
+-- COMMAND ----------
+
+CREATE OR REPLACE FUNCTION buscar_produtos_similares(descripcion STRING)
+RETURNS TABLE(id LONG, producto STRING, descripcion STRING, search_score DOUBLE)
+COMMENT 'Esta función recibe una descripción del producto, que se utiliza para buscar productos similares.'
 RETURN SELECT id, produto, descricao, search_score FROM (
   SELECT *, ROW_NUMBER() OVER (ORDER BY search_score DESC) AS rn
   FROM vector_search(
-    index => 'tutorial.carga.produtos_index',
-    query => buscar_produtos_semelhantes.descricao,
+    index => 'funcionesai.carga.productos_index',
+    query => buscar_produtos_similares.descripcion,
     num_results => 10)
   WHERE search_score BETWEEN 0.003 AND 0.99
 ) WHERE rn <= 3
@@ -294,37 +308,37 @@ RETURN SELECT id, produto, descricao, search_score FROM (
 
 -- COMMAND ----------
 
-SELECT * FROM buscar_produtos_semelhantes('O fone de ouvido DEF é um dispositivo de áudio projetado para fornecer uma experiência de som imersiva e de alta qualidade. Com drivers de alta fidelidade e tecnologia de cancelamento de ruído, ele permite que você se perca na música ou nos detalhes de um podcast sem distrações. Além disso, seu design ergonômico garante confort durante o uso prolongado.')
+SELECT * FROM buscar_produtos_similares('Los auriculares DEF son un dispositivo de audio diseñado para brindar una experiencia de sonido envolvente y de alta calidad. Con controladores de alta fidelidad y tecnología de cancelación de ruido, te permite perderte en la música o los detalles de un podcast sin distracciones. Además, su diseño ergonómico garantiza comodidad durante un uso prolongado.')
 
 -- COMMAND ----------
 
 -- MAGIC %md ### E. Probar la función como herramienta
 -- MAGIC
--- MAGIC 1. No **menu principal** à esquerda, clique em **`Playground`**
--- MAGIC 2. Clique no **seletor de modelos** e selecione o modelo **`Meta Llama 3.1 70B Instruct`** (caso já não esteja selecionado)
--- MAGIC 3. Clique em **Tools** e depois em **Add Tool** 
--- MAGIC 4. Em **Hosted Function**, digite `academy.<seu_nome>.buscar_produtos_semelhantes`
--- MAGIC 5. Adicione a instrução abaixo:
--- MAGIC     ```
--- MAGIC     Quais os tablets com boa qualidade da tela?
--- MAGIC     ```
--- MAGIC 6. Clique no ícone **enviar**
+-- MAGIC 1. En el **menú principal** de la izquierda, haz clic en **`Playground`**
+-- MAGIC 2. Haga clic en el **selector de modelo** y seleccione el modelo **`Meta Llama 3.1 70B Instruct`** (si aún no está seleccionado)
+-- MAGIC 3. Haga clic en **Tools** y luego en **Add tools**
+-- MAGIC 4. En **Hosted function**, escriba `funcionesai.carga.buscar_produtos_similares`
+-- MAGIC 5. Agregue la siguiente declaración:
+-- MAGIC  ```
+-- MAGIC  ¿Qué tabletas tienen buena calidad de pantalla?
+-- MAGIC  ```
+-- MAGIC 6. Haga clic en el ícono **enviar**
 
 -- COMMAND ----------
 
 -- MAGIC %md ## Probando a nuestro agente
 -- MAGIC
--- MAGIC 1. No **menu principal** à esquerda, clique em **`Playground`**
--- MAGIC 2. Clique no **seletor de modelos** e selecione o modelo **`Meta Llama 3.1 70B Instruct`** (caso já não esteja selecionado)
--- MAGIC 3. Clique em **Tools** e depois em **Add Tool** 
--- MAGIC 4. Em **Hosted Function**, digite `academy.<seu_nome>.*` para adicionar todas as funções criadas
--- MAGIC 5. Em **System Prompt**, digite: <br>
--- MAGIC `Você é um assistente virtual de um e-commerce. Para responder à perguntas, é necessário que o cliente forneça seu CPF. Caso ainda não tenha essa informação, solicite o CPF educadamente. Você pode responder perguntas sobre entrega, devolução de produtos, status de pedidos, entre outros. Se você não souber como responder a pergunta, diga que você não sabe. Não invente ou especule sobre nada. Sempre que perguntado sobre procedimentos, consulte nossa base de conhecimento.`
--- MAGIC 6. Digite `Olá!`
--- MAGIC 7. Digite `000.000.000-01`
--- MAGIC 8. Digite `Comprei um tablet DEF, porém a qualidade da tela é muito ruim`
--- MAGIC 9. Digite `Poderia recomendar produtos semelhantes?`
--- MAGIC 10. Digite `Como faço para solicitar a troca?`
+-- MAGIC 1. En el **menú principal** de la izquierda, haz clic en **`Playground`**
+-- MAGIC 2. Haga clic en el **selector de modelo** y seleccione el modelo **`Meta Llama 3.1 70B Instruct`** (si aún no está seleccionado)
+-- MAGIC 3. Haga clic en **Tools** y luego en **Add tools**
+-- MAGIC 4. En **Hosted Function**, escriba `funcionesai.carga.*` para agregar todas las funciones creadas.
+-- MAGIC 5. En **System Prompt**, escriba: <br>
+-- MAGIC `Eres un asistente virtual para un comercio electrónico. Para responder preguntas, el cliente debe proporcionar su cédula. Si aún no tiene esta información, solicite cortésmente su cédula. Podrás resolver dudas sobre entrega, devoluciones de productos, estado de pedidos, entre otras. Si no sabe cómo responder la pregunta, diga que no lo sabe. No inventes ni especules sobre nada. Siempre que se le pregunte sobre procedimientos, consulte nuestra base de conocimientos.`
+-- MAGIC 6. Escribe "¡Hola!"
+-- MAGIC 7. Ingrese `000.000.000-01`
+-- MAGIC 8. Escriba "Compré una tableta DEF, pero la calidad de la pantalla es muy mala".
+-- MAGIC 9. Escriba "¿Podría recomendar productos similares?"
+-- MAGIC 10. Escriba "¿Cómo solicito un cambio?"
 
 -- COMMAND ----------
 
