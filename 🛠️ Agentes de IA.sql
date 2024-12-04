@@ -342,10 +342,6 @@ SELECT * FROM buscar_produtos_similares('Los auriculares DEF son un dispositivo 
 
 -- COMMAND ----------
 
-
-
--- COMMAND ----------
-
 -- MAGIC %md # ¡Felicidades!
 -- MAGIC
 -- MAGIC ¡Has completado el laboratorio de **Agentes**!
