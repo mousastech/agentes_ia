@@ -11,7 +11,7 @@ CREATE CATALOG IF NOT EXISTS funcionesai;
 
 CREATE SCHEMA IF NOT EXISTS `funcionesai`.`carga`;
 
-CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`;
+CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`; 
 
 -- COMMAND ----------
 
