@@ -88,21 +88,21 @@
 
 -- MAGIC %md ## Consultando dados do cliente
 -- MAGIC
--- MAGIC Ferramentas podem ser utilizadas em diversos cenários, como por exemplo:
+-- MAGIC Las herramientas se pueden utilizar en diferentes escenarios, como:
 -- MAGIC
--- MAGIC - Consultar informações em bancos de dados
--- MAGIC - Calcular indicadores complexos
--- MAGIC - Gerar um texto baseado nas informações disponíveis
--- MAGIC - Interagir com APIs e sistemas externos
+-- MAGIC - Consultar información en bases de datos
+-- MAGIC - Calcular indicadores complejos
+-- MAGIC - Generar un texto basado en la información disponible
+-- MAGIC - Interactuar con API y sistemas externos
 -- MAGIC
--- MAGIC Como já discutimos, isso vai ser muito importante para conseguirmos produzir respostas mais personalizadas e precisas no nosso agente. 
+-- MAGIC Como ya hemos comentado, esto será muy importante para que podamos producir respuestas más personalizadas y precisas en nuestro agente.
 -- MAGIC
--- MAGIC No nosso caso, gostaríamos de:
--- MAGIC - Consultar os dados do cliente
--- MAGIC - Pesquisar perguntas e respostas em uma base de conhecimento
--- MAGIC - Fornecer recomendações personalizadas de produtos com base em suas descrições
+-- MAGIC En nuestro caso nos gustaría:
+-- MAGIC - Consultar datos del cliente
+-- MAGIC - Búsqueda de preguntas y respuestas en una base de conocimientos
+-- MAGIC - Proporciona recomendaciones de productos personalizadas basadas en tus descripciones.
 -- MAGIC
--- MAGIC Vamos começar pela consulta dos dados do cliente!
+-- MAGIC ¡Comencemos consultando los datos de los clientes!
 
 -- COMMAND ----------
 
@@ -129,7 +129,7 @@ RETURN SELECT nome, sobrenome, num_pedidos FROM clientes c WHERE c.id_cliente = 
 
 -- COMMAND ----------
 
-SELECT * FROM consultar_cliente(1)
+SELECT * FROM consultar_cliente(2)
 
 -- COMMAND ----------
 
