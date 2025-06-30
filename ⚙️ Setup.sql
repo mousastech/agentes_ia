@@ -7,18 +7,18 @@
 -- COMMAND ----------
 
 -- DBTITLE 1,Crear la estructura central
-CREATE CATALOG IF NOT EXISTS funcionesai;
+CREATE CATALOG IF NOT EXISTS agents_ia;
 
-CREATE SCHEMA IF NOT EXISTS `funcionesai`.`carga`;
+CREATE SCHEMA IF NOT EXISTS `agents_ia`.`atencion`;
 
-CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`; 
+CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`; 
 
 -- COMMAND ----------
 
 -- DBTITLE 1,Cargar tabla Productos
 -- MAGIC %python
--- MAGIC catalog = "funcionesai"
--- MAGIC schema = "carga"
+-- MAGIC catalog = "agents_ia"
+-- MAGIC schema = "atencion"
 -- MAGIC volume = "archivos"
 -- MAGIC
 -- MAGIC download_url = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/productos.csv"
@@ -43,8 +43,8 @@ CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`;
 
 -- DBTITLE 1,Cargar tabla faq
 -- MAGIC %python
--- MAGIC catalog = "funcionesai"
--- MAGIC schema = "carga"
+-- MAGIC catalog = "agents_ia"
+-- MAGIC schema = "atencion"
 -- MAGIC volume = "archivos"
 -- MAGIC
 -- MAGIC download_url = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/faq.csv"
@@ -77,8 +77,8 @@ CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`;
 
 -- DBTITLE 1,Cargar tabla Opiniones
 -- MAGIC %python
--- MAGIC catalog = "funcionesai"
--- MAGIC schema = "carga"
+-- MAGIC catalog = "agents_ia"
+-- MAGIC schema = "atencion"
 -- MAGIC volume = "archivos"
 -- MAGIC
 -- MAGIC download_url = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/opiniones.csv"
@@ -105,8 +105,8 @@ CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`;
 
 -- DBTITLE 1,Cargar tabla Clientes
 -- MAGIC %python
--- MAGIC catalog = "funcionesai"
--- MAGIC schema = "carga"
+-- MAGIC catalog = "agents_ia"
+-- MAGIC schema = "atencion"
 -- MAGIC volume = "archivos"
 -- MAGIC
 -- MAGIC download_url = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/clientes.csv"
@@ -143,8 +143,8 @@ CREATE VOLUME IF NOT EXISTS `funcionesai`.`carga`.`archivos`;
 -- MAGIC opiniones = "https://github.com/mousastech/iafunciones/blob/main/data/opiniones.csv"
 -- MAGIC clientes = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/clientes.csv"
 -- MAGIC
--- MAGIC catalog = "funcionesai"
--- MAGIC schema = "carga"
+-- MAGIC catalog = "agents_ia"
+-- MAGIC schema = "atencion"
 -- MAGIC volume = "archivos"
 -- MAGIC
 -- MAGIC path_table = f"{catalog}.{schema}"
