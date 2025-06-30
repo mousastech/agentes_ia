@@ -21,7 +21,7 @@ En un nivel alto, usted crea y presenta un conjunto de funciones personalizadas 
 ## Disclaimer
 
 - Se requiere Unity Catalog
-- Se requiere la criación de Vector Search
+- Se requiere la creación de Vector Search
 - Se requiere la utilización de LLMs
 
 ## Implementation Details
@@ -31,5 +31,5 @@ En un nivel alto, usted crea y presenta un conjunto de funciones personalizadas 
 ## Setup and Usage
 
 1. Hacer el setup de las tablas (si aún no ha hecho) - notebook **Setup**
-2. Correr el notebook para la criación de los componentes
+2. Correr el notebook para la creación de los componentes
 3. Crear los índices en el Vector Search
