@@ -7,7 +7,7 @@
 -- COMMAND ----------
 
 -- DBTITLE 1,Crear la estructura central
-CREATE CATALOG IF NOT EXISTS agents_ia;
+CREATE CATALOG IF NOT EXISTS `agents_ia`;
 
 CREATE SCHEMA IF NOT EXISTS `agents_ia`.`atencion`;
 
