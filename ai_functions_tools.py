@@ -4,7 +4,7 @@
 
 # COMMAND ----------
 
-catalog = "mozuca"
+catalog = "funcionesai"
 dbName = db = "agents_demo"
 
 # COMMAND ----------
@@ -98,8 +98,9 @@ use_and_create_db(catalog,dbName)
 
 # COMMAND ----------
 
+# DBTITLE 1,Consulta la temperatura en Ciudad de Mexico
 # MAGIC %sql
-# MAGIC SELECT get_weather(-23.5505, -46.6333, '2025-02-14')
+# MAGIC SELECT get_weather(-19.4326, -99.1332, '2025-02-01')
 
 # COMMAND ----------
 
@@ -138,7 +139,36 @@ use_and_create_db(catalog,dbName)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT get_coordinates_from_cep("13401843")
+# MAGIC CREATE OR REPLACE FUNCTION get_coordinates_from_postalcode(postalcode STRING)
+# MAGIC RETURNS STRUCT<latitude DOUBLE, longitude DOUBLE>
+# MAGIC LANGUAGE PYTHON
+# MAGIC COMMENT 'This function retrieves the latitude and longitude for a given Mexican postal code using a geolocation API.'
+# MAGIC AS
+# MAGIC $$
+# MAGIC import requests as r
+# MAGIC
+# MAGIC url = f"https://api.zippopotam.us/MX/{postalcode}"
+# MAGIC
+# MAGIC response = r.get(url)
+# MAGIC
+# MAGIC if response.status_code == 200:
+# MAGIC     data = response.json()
+# MAGIC     
+# MAGIC     if data and 'places' in data and len(data['places']) > 0:
+# MAGIC         latitude = float(data['places'][0]['latitude'])
+# MAGIC         longitude = float(data['places'][0]['longitude'])
+# MAGIC         
+# MAGIC         return {"latitude": latitude, "longitude": longitude}
+# MAGIC     else:
+# MAGIC         return {"latitude": 19.432608, "longitude": -99.133209}  # Default coordinates for Mexico City
+# MAGIC else:
+# MAGIC     return {"latitude": 19.432608, "longitude": -99.133209}  # Default coordinates for Mexico City
+# MAGIC $$;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT get_coordinates_from_postalcode("99998")
 
 # COMMAND ----------
 
@@ -188,7 +218,72 @@ use_and_create_db(catalog,dbName)
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC SELECT * FROM get_delayed_or_cancelled_flights('2024-01-01', '2024-01-31', 'SBGR', 'SBBR') as dc_flights
+# MAGIC CREATE OR REPLACE FUNCTION get_delayed_or_cancelled_flights_mx(start_date STRING, end_date STRING, sigla_icao_aero_origem STRING, sigla_icao_aero_destino STRING)
+# MAGIC RETURNS TABLE (
+# MAGIC     sigla_icao_empresa_aerea STRING,
+# MAGIC     empresa_aerea STRING,
+# MAGIC     numero_voo STRING,
+# MAGIC     sigla_icao_aeroporto_origem STRING,
+# MAGIC     desc_aeroporto_origem STRING,
+# MAGIC     partida_prevista TIMESTAMP,
+# MAGIC     partida_real TIMESTAMP,
+# MAGIC     sigla_icao_aeroporto_destino STRING,
+# MAGIC     desc_aeroporto_destino STRING,
+# MAGIC     chegada_prevista TIMESTAMP,
+# MAGIC     chegada_real TIMESTAMP,
+# MAGIC     situacao_voo STRING,
+# MAGIC     justificativa STRING
+# MAGIC )
+# MAGIC COMMENT 'This function retrieves flights that were delayed by more than 2 hours or canceled within a specified date range and between specified origin and destination airports.'
+# MAGIC RETURN
+# MAGIC SELECT 
+# MAGIC     sigla_icao_empresa_aerea,
+# MAGIC     empresa_aerea,
+# MAGIC     numero_voo,
+# MAGIC     sigla_icao_aeroporto_origem,
+# MAGIC     desc_aeroporto_origem,
+# MAGIC     partida_prevista,
+# MAGIC     partida_real,
+# MAGIC     sigla_icao_aeroporto_destino,
+# MAGIC     desc_aeroporto_destino,
+# MAGIC     chegada_prevista,
+# MAGIC     chegada_real,
+# MAGIC     situacao_voo,
+# MAGIC     justificativa
+# MAGIC FROM 
+# MAGIC     funcionesai.agents_demo.vuelos_regulares
+# MAGIC WHERE 
+# MAGIC     (UPPER(situacao_voo) = 'CANCELADO' OR 
+# MAGIC     (partida_real IS NOT NULL AND partida_real > partida_prevista + INTERVAL 2 HOUR) OR 
+# MAGIC     (chegada_real IS NOT NULL AND chegada_real > chegada_prevista + INTERVAL 2 HOUR))
+# MAGIC     AND partida_prevista BETWEEN start_date AND end_date
+# MAGIC     AND sigla_icao_aeroporto_origem ILIKE sigla_icao_aero_origem
+# MAGIC     AND sigla_icao_aeroporto_destino ILIKE sigla_icao_aero_destino;
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT 
+# MAGIC     sigla_icao_empresa_aerea,
+# MAGIC     empresa_aerea,
+# MAGIC     numero_voo,
+# MAGIC     sigla_icao_aeroporto_origem,
+# MAGIC     desc_aeroporto_origem,
+# MAGIC     partida_prevista,
+# MAGIC     partida_real,
+# MAGIC     sigla_icao_aeroporto_destino,
+# MAGIC     desc_aeroporto_destino,
+# MAGIC     chegada_prevista,
+# MAGIC     chegada_real,
+# MAGIC     situacao_voo,
+# MAGIC     justificativa
+# MAGIC FROM 
+# MAGIC     funcionesai.agents_demo.vuelos_regulares
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT * FROM get_delayed_or_cancelled_flights('2022-01-01', '2022-01-31', 'SBGR', 'MMMX') as dc_flights
 
 # COMMAND ----------
 
@@ -226,6 +321,10 @@ def get_coordinates_from_cep(cep):
 cep = "13401-843"
 latitude, longitude = get_coordinates_from_cep(cep)
 print(f"Latitude: {latitude}, Longitude: {longitude}")
+
+# COMMAND ----------
+
+
 
 # COMMAND ----------
 
