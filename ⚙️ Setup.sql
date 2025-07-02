@@ -7,16 +7,19 @@
 -- COMMAND ----------
 
 -- DBTITLE 1,Crear la estructura central
+--Crear tablas necesarias para el modelo
+
 CREATE CATALOG IF NOT EXISTS `agents_ia`;
 
 CREATE SCHEMA IF NOT EXISTS `agents_ia`.`atencion`;
 
-CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`; 
+CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`;
 
 -- COMMAND ----------
 
 -- DBTITLE 1,Cargar tabla Productos
 -- MAGIC %python
+-- MAGIC
 -- MAGIC catalog = "agents_ia"
 -- MAGIC schema = "atencion"
 -- MAGIC volume = "archivos"
@@ -38,6 +41,38 @@ CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`;
 -- MAGIC   encoding="UTF-8")
 -- MAGIC
 -- MAGIC df.write.mode("overwrite").saveAsTable(f"{path_table}.{table_name}")
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC def load_table(catalog: str, schema: str, volume: str, download_url: str, file_name: str, table_name: str) -> None:
+-- MAGIC     path_volume = f"/Volumes/{catalog}/{schema}/{volume}"
+-- MAGIC     path_table = f"{catalog}.{schema}"
+-- MAGIC     print(path_table)  # Show the complete path
+-- MAGIC     print(path_volume)  # Show the complete path
+-- MAGIC
+-- MAGIC     dbutils.fs.cp(download_url, f"{path_volume}/{file_name}")
+-- MAGIC
+-- MAGIC     df = spark.read.csv(f"{path_volume}/{file_name}",
+-- MAGIC                         header=True,
+-- MAGIC                         inferSchema=True,
+-- MAGIC                         sep=",",
+-- MAGIC                         encoding="UTF-8")
+-- MAGIC
+-- MAGIC     # Save the table
+-- MAGIC     df.write.mode("overwrite").saveAsTable(f"{path_table}.{table_name}")
+-- MAGIC
+-- MAGIC     display(df)
+-- MAGIC
+-- MAGIC # Example usage for "Cargar tabla Reseñas"
+-- MAGIC catalog = "agents_ia"
+-- MAGIC schema = "atencion"
+-- MAGIC volume = "archivos"
+-- MAGIC download_url = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/opiniones.csv"
+-- MAGIC file_name = "opiniones.csv"
+-- MAGIC table_name = "resenas"
+-- MAGIC
+-- MAGIC load_table(catalog, schema, volume, download_url, file_name, table_name)
 
 -- COMMAND ----------
 
@@ -75,7 +110,7 @@ CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`;
 
 -- COMMAND ----------
 
--- DBTITLE 1,Cargar tabla Opiniones
+-- DBTITLE 1,Cargar tabla Reseñas
 -- MAGIC %python
 -- MAGIC catalog = "agents_ia"
 -- MAGIC schema = "atencion"
@@ -83,7 +118,7 @@ CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`;
 -- MAGIC
 -- MAGIC download_url = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/opiniones.csv"
 -- MAGIC file_name = "opiniones.csv"
--- MAGIC table_name = "opiniones"
+-- MAGIC table_name = "resenas"
 -- MAGIC path_volume = "/Volumes/" + catalog + "/" + schema + "/" + volume
 -- MAGIC path_table = catalog + "." + schema
 -- MAGIC print(path_table) # Show the complete path
@@ -140,7 +175,7 @@ CREATE VOLUME IF NOT EXISTS `agents_ia`.`atencion`.`archivos`;
 -- MAGIC %python
 -- MAGIC productos = "https://github.com/mousastech/iafunciones/blob/main/data/productos.csv"
 -- MAGIC faq = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/faq.csv"
--- MAGIC opiniones = "https://github.com/mousastech/iafunciones/blob/main/data/opiniones.csv"
+-- MAGIC resenas = "https://github.com/mousastech/iafunciones/blob/main/data/opiniones.csv"
 -- MAGIC clientes = "https://raw.githubusercontent.com/mousastech/iafunciones/refs/heads/main/data/clientes.csv"
 -- MAGIC
 -- MAGIC catalog = "agents_ia"
