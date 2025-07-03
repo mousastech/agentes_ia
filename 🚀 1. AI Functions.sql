@@ -63,7 +63,7 @@ USE agents_ia.atencion
 
 -- COMMAND ----------
 
--- MAGIC %md ### B. Ver la tabla de calificaciones
+-- MAGIC %md ### B. Ver la tabla de Reseñas
 
 -- COMMAND ----------
 
@@ -109,10 +109,10 @@ SELECT * FROM clientes
 
 -- COMMAND ----------
 
-SELECT *, 
-       ai_analyze_sentiment(avaliacao) AS sentimiento 
+SELECT *
+     , ai_analyze_sentiment(avaliacao) AS sentimiento
 FROM resenas 
-WHERE avaliacao IS NOT NULL 
+WHERE avaliacao IS NOT NULL
 
 -- COMMAND ----------
 
